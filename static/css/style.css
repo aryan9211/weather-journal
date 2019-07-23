@@ -1,0 +1,15 @@
+html {
+  font-family: "Darker Grotesque", sans-serif;
+  color: white;
+}
+
+body {
+  background: #303030;
+  margin: 0;
+}
+
+.header {
+  background: #212121;
+  display: flex;
+  justify-content: center;
+}
