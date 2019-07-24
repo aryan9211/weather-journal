@@ -1,19 +1,63 @@
-/* Global Variables */
+const KELVIN = 273.15;
+const country = "in";
+const API_KEY = "fc27ee8b856655ef995c9dc03e29d192";
+const weatherUri = `https://api.openweathermap.org/data/2.5/weather?appid=${API_KEY}`;
 
-// Personal API Key for OpenWeatherMap API
+function resolveStatus(response) {
+  if (response.status !== 200) throw new Error(response);
+  return response.json();
+}
 
-// Event listener to add function to existing HTML DOM element
+function updateJournalDOM(data) {
+  console.log(data);
+}
 
-/* Function called by event listener */
+function fetchJournalData() {
+  fetch("/data")
+    .then(resolveStatus)
+    .then(updateJournalDOM);
+}
 
-/* Function to GET Web API Data*/
+function postJournalData(payload) {
+  fetch("/data", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then(resolveStatus)
+    .then(updateJournalDOM);
+}
 
-/* Function to POST data */
+function fetchWeatherData() {
+  const zip = document.getElementById("zip").value;
+  const userInput = document.getElementById("feelings").value;
+  fetch(`${weatherUri}&zip=${zip},${country}`)
+    .then(resolveStatus)
+    .then(data => {
+      const payload = {
+        temp: data.main.temp - KELVIN,
+        date: new Date(),
+        userInput,
+      };
+      postJournalData(payload);
+    });
+}
 
+function validateFields() {
+  const zip = document.getElementById("zip");
+  if (!zip.value || isNaN(Number(zip.value))) {
+    zip.classList.add("input-error");
+    return false;
+  }
+  zip.classList.remove("input-error");
+  return true;
+}
 
-/* Function to GET Project Data */
+document.getElementById("form").addEventListener("submit", e => {
+  e.preventDefault();
+  if (validateFields()) fetchWeatherData();
+});
 
-
-// Create a new date instance dynamically with JS
-let d = new Date();
-let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+fetchJournalData();
