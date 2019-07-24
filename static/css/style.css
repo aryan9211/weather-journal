@@ -39,6 +39,23 @@ label {
   border-bottom: #DB4437 2px solid; !important;
 }
 
+.recent-header {
+  text-align: center;
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.table-cell {
+  font-size: 20px;
+}
+
+.table-header {
+  font-weight: bold;
+}
+
 #form {
   display: flex;
   flex-direction: column;
